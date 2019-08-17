@@ -15,6 +15,8 @@ private:
   // private functions
   void initVariables();
   void initWindow();
+  void initFonts();
+  void initText();
   void initEnemies();
 
   // private variables
@@ -25,6 +27,12 @@ private:
   // mouse positions
   sf::Vector2i mousePosWindow;
   sf::Vector2f mousePosView;
+
+  // Resources
+  sf::Font font;
+
+  // Text
+  sf::Text uiText;
 
   // Gamelogic
   bool endGame;
@@ -54,9 +62,11 @@ public:
   void pollEvents();
   void updateMousePositions();
   void updateEnemies();
+  void updateText();
   void update();
 
-  void renderEnemies();
+  void renderEnemies(sf::RenderTarget& target);
+  void renderText(sf::RenderTarget& target);
   void render();
 };
 

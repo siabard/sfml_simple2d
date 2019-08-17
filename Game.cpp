@@ -25,6 +25,20 @@ void Game::initWindow() {
   this->window->setFramerateLimit(60);
 }
 
+void Game::initFonts() {
+  if(!this->font.loadFromFile("fonts/DroidSans.ttf")) {
+    std::cout << "ERROR::GAME::INITFONTS::Failed to load font!" << std::endl;
+  }
+}
+
+void Game::initText() {
+  this->uiText.setFont(this->font);
+  this->uiText.setCharacterSize(12);
+  this->uiText.setFillColor(sf::Color::White);
+  this->uiText.setString("NONE");
+}
+
+
 void Game::initEnemies() {
 
   this->enemy.setPosition(10.f, 10.f);
@@ -41,6 +55,8 @@ void Game::initEnemies() {
 Game::Game() {
   this->initVariables();
   this->initWindow();
+  this->initFonts();
+  this->initText();
   this->initEnemies();
 }
 
@@ -146,6 +162,16 @@ void Game::updateEnemies() {
   }
 }
 
+
+void Game::updateText() {
+  std::stringstream ss;
+
+  ss << "Points: " << this->points << std::endl
+     << "Health: " << this->health << std::endl;
+
+  this->uiText.setString(ss.str());
+}
+
 /**
  *
  * Update the mouse positions:
@@ -166,6 +192,7 @@ void Game::update() {
   if(this->endGame == false) {
     this->updateMousePositions();
     this->updateEnemies();
+    this->updateText();
   }
 
   // End Game Condition
@@ -175,12 +202,16 @@ void Game::update() {
 
 }
 
-void Game::renderEnemies() {
+void Game::renderEnemies(sf::RenderTarget& target) {
 
   // rendering all enemies
   for(auto &e: this->enemies) {
-    this->window->draw(e);
-  }
+    target.draw(e);
+   }
+}
+
+void Game::renderText(sf::RenderTarget& target) {
+  target.draw(this->uiText);
 }
 
 void Game::render() {
@@ -196,7 +227,9 @@ void Game::render() {
   this->window->clear();
 
   // Draw objects
-  this->renderEnemies();
+  this->renderEnemies(*this->window);
+
+  this->renderText(*this->window);
 
   this->window->display();
 
