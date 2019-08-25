@@ -40,7 +40,7 @@ private:
   int health;
   float enemySpawnTimer;
   float enemySpawnTimerMax;
-  int maxEnemies;
+  unsigned maxEnemies;
   bool mouseHeld;
 
   // Game objects
